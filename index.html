@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+		<title>Cryptocurrency Dashboard</title>
+		<meta charset="utf-8">
+		<meta name="description" content="Cryptocurrency Dashboard">
+		<meta name="keywords" content="BTC Dashboard,Coin Dashboard,BTC,비트코인,ETH,이더리움,XRP,리플,ADA,에이다,DOT,폴카닷,LINK,체인링크,BCH,비트코인캐시,ETC,이더리움클래식,DOGE,도지,LTC,라이트코인">
+		<meta name="author" content="cheol">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="theme-color" content="#282c34" />
+		<meta property="og:title" content="Cryptocurrency Dashboard" />
+		<link rel="icon" type="image/png" href="icon/bitcoin-icon.png" />
+	    <link href="css/bootstrap.min.css" rel="stylesheet">
+	    <link href="css/main.css?u=33390" rel="stylesheet">
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7S6NP87HT"></script>
+    </head>
+    <span id="marketLogo" class="marketLogo"></span>
+	<header>
+	    <nav>
+	    	<span class="animate__animated animate__flash animate__delay-3s" data-toggle="modal" data-target="#settingModal">
+			<svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" style="display: inline-block; vertical-align: text-bottom;"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.101.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.075.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.101-.143.137-.146zM8 0c-.236 0-.47.01-.701.03-.743.065-1.29.615-1.458 1.261l-.29 1.106c-.017.066-.078.158-.211.224a5.994 5.994 0 00-.668.386c-.123.082-.233.09-.3.071L3.27 2.776c-.644-.177-1.392.02-1.82.63a7.977 7.977 0 00-.704 1.217c-.315.675-.111 1.422.363 1.891l.815.806c.05.048.098.147.088.294a6.084 6.084 0 000 .772c.01.147-.038.246-.088.294l-.815.806c-.474.469-.678 1.216-.363 1.891.2.428.436.835.704 1.218.428.609 1.176.806 1.82.63l1.103-.303c.066-.019.176-.011.299.071.213.143.436.272.668.386.133.066.194.158.212.224l.289 1.106c.169.646.715 1.196 1.458 1.26a8.094 8.094 0 001.402 0c.743-.064 1.29-.614 1.458-1.26l.29-1.106c.017-.066.078-.158.211-.224a5.98 5.98 0 00.668-.386c.123-.082.233-.09.3-.071l1.102.302c.644.177 1.392-.02 1.82-.63.268-.382.505-.789.704-1.217.315-.675.111-1.422-.364-1.891l-.814-.806c-.05-.048-.098-.147-.088-.294a6.1 6.1 0 000-.772c-.01-.147.039-.246.088-.294l.814-.806c.475-.469.679-1.216.364-1.891a7.992 7.992 0 00-.704-1.218c-.428-.609-1.176-.806-1.82-.63l-1.103.303c-.066.019-.176.011-.299-.071a5.991 5.991 0 00-.668-.386c-.133-.066-.194-.158-.212-.224L10.16 1.29C9.99.645 9.444.095 8.701.031A8.094 8.094 0 008 0zm1.5 8a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM11 8a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+			</span>
+		</nav>
+    </header>
+	<div class="container-fluid">
+		<h1 id="greetings" style="font-weight: 700; font-style: italic;" class="text-center mt-3 mb-2">Loading</h1>
+		<div style="padding-right: 15px; padding-left: 15px; padding-bottom: 3px;" class="row">
+			<div class="col-4">
+				<div class="card text-center">
+					<div id="upbit" style="font-weight: 300;" class="card-header">Upbit</div>
+					<div class="card-body">
+						<h5 id="upbitKrw" style="font-weight: 300;" class="card-title">Loading</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card text-center">
+					<div id="exchangeRate" style="font-weight: 300;" class="card-header">K-Premium</div>
+					<div class="card-body">
+						<h5 id="kpraemium" style="font-weight: 300;" class="card-title">Loading</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card text-center">
+					<div id="option-area" style="font-weight: 300;" class="card-header">-</div>
+					<div class="card-body">
+						<h5 id="option-area-value" style="font-weight: 300;" class="card-title">Loading</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+ 
+		<div class="progress mb-1">
+			<div id="longRate" class="progress-bar bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 10%;">Loding</div>
+			<div id="shortRate" class="progress-bar bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">[bybt.com] Long/Short Rate</div>
+		</div>
+		<div id="chartArea" class="tradingViewArea">
+			<div id="tv_btcusdt" style="height:100%"></div>
+		</div>
+		<div class="text-center mt-1 mb-3">
+			<a href="javascript:chartAreaHight(-50);" style="color: #818181;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+</svg></a> &nbsp;
+			<a href="javascript:chartAreaHight(50);" style="color: #818181;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+</svg></a>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="settingModal" tabindex="-1" role="dialog"
+		aria-labelledby="settingModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<p style="color: #000;" class="modal-title" id="settingModalLabel"><strong>Setting</strong></p>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<label for="coin" style="color: #333;" class="col-form-label">암호화폐(Cryptocurrencies)</label>				
+					<div class="input-group mb-2">
+						<select	id="ttype" class="form-control">
+							<option value="cu">현물(Spot)</option>
+							<option value="ft">선물(Futures)</option>
+						</select>
+						<select	id="market" class="form-control">
+							<option value="BINANCE">바이낸스(Binance)</option>
+							<option value="BYBIT">바이비트(Bybit)</option>
+							<option value="BITMEX">비트맥스(Bitmex)</option>
+						</select>
+						<select	id="symbol" class="form-control">
+							<option id="btcusdt" value="btcusdt">비트코인(Bitcoin)</option>
+							<option id="ethusdt" value="ethusdt">이더리움(Ethereum)</option>
+							<option id="xrpusdt" value="xrpusdt">리플(XRP)</option>
+							<option id="adausdt" value="adausdt">에이다(Cardano)</option>
+							<option id="solusdt" value="solusdt">솔라나(Solana)</option>
+							<option id="dotusdt" value="dotusdt">폴카닷(Polkadot)</option>
+							<option id="ltcusdt" value="ltcusdt">라이트코인(Litecoin)</option>
+							<option id="bchusdt" value="bchusdt">비트코인캐시(Bitcoin Cash)</option>
+							<option id="etcusdt" value="etcusdt">이더리움클래식(Ethereum Classic)</option>
+							<option id="linkusdt" value="linkusdt">체인링크(Chainlink)</option>
+							<option id="dogeusdt" value="dogeusdt">도지(Dogecoin)</option>
+							<!-- <option id="manausdt" value="manausdt">MANA(디센트럴랜드)</option> -->
+						</select>
+					</div>
+					
+					<label for="message-text" style="color: #333;" class="col-form-label">챠트 타입(Chart Type) / 주기(Rate)</label>
+					<div class="input-group mb-2">
+						<select id="ctype" class="form-control">
+							<option value="candle">캔들(Candle)</option>
+							<option value="heikinashi">하이킨 아시(Heikinashi)</option>
+							<option value="line">라인(Line)</option>
+						</select>
+						<select id="chartInterval" class="form-control">
+							<option value="5">5분(5min)</option>
+							<option value="15">15분(15min)</option>
+							<option value="30">30분(30min)</option>
+							<option value="60">60분(60min)</option>
+							<option value="240">240분(240min)</option>
+							<option value="D">1일(1Day)</option>
+							<option value="W">1주(1Week)</option>
+						</select>
+					</div>
+					
+					<label for="message-text" style="color: #333;" class="col-form-label">지표(Indicators)</label>
+					<div class="input-group mb-2">
+						<label class="mr-3"><input type="checkbox" id="ma" value="Y" /> <small style="color: #333;">MA</small></label>
+						<label class="mr-3"><input type="checkbox" id="boll" value="Y" /> <small style="color: #333;">BOLL</small></label>
+						<label class="mr-3"><input type="checkbox" id="pivot" value="Y" /> <small style="color: #333;">PPS</small></label>
+						<label class="mr-3"><input type="checkbox" id="ichimoku" value="Y" /> <small style="color: #333;">Ichimoku</small></label>
+						<label class="mr-3"><input type="checkbox" id="rsi" value="Y" /> <small style="color: #333;">RSI</small></label>
+						<label class="mr-3"><input type="checkbox" id="wr" value="Y" /> <small style="color: #333;">William %R</small></label>
+						<label><input type="checkbox" id="macd" value="Y" /> <small style="color: #333;">MACD</small></label>
+					</div>
+					
+					<div class="input-group mb-2">
+						<label class="mr-3"><input type="checkbox" id="drawingtoolbar" value="Y" /> <small style="color: #333;">드로잉 툴바(Drawing Tools bar)</small></label>
+					</div>
+					
+					<label for="message-text" style="color: #333;" class="col-form-label">롱,숏 비율 주기 (Long,Short Rate)</label>
+					<div class="input-group mb-2">
+						<select id="longShortInterval" class="form-control">
+							<option value="3">5분(5min)</option>
+							<option value="10">15분(15min)</option>
+							<option value="11">30분(30min)</option>
+							<option value="2">60분(60min)</option>
+							<option value="1">240분(240min)</option>
+						</select>
+					</div>
+					
+					<!-- 
+					<label for="message-text" style="color: #333;" class="col-form-label">페이지 새로고침</label>
+					<div class="input-group mb-2">
+						<select id="reloadInterval" class="form-control">
+							<option value="10">10분</option>
+							<option value="30">30분</option>
+							<option value="60">60분</option>
+							<option value="0">No</option>
+						</select>
+					</div> -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary" onclick="javascript:reset();">Reset</button>
+					<button type="button" class="btn btn-primary" onclick="javascript:setting();">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+    <script src="js/websocket.min.js"></script>
+	<script src="js/main.js?u=33390"></script>
+	<script src="https://s3.tradingview.com/tv.js?u=33390"></script>
+</body>
+</html>
