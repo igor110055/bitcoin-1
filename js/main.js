@@ -209,7 +209,7 @@ function longShortRateReqListener () {
 function longShortRate(symbol, interval) {
 	var res = new XMLHttpRequest();
 	res.addEventListener("load", longShortRateReqListener);
-	res.open("GET", "http://fapi.bybt.com/api/futures/longShortRate?timeType="+interval+"&symbol=" + symbol);
+	res.open("GET", "https://fapi.coinglass.com/api/futures/longShortRate?timeType="+interval+"&symbol=" + symbol);
 	res.send();
 }
 
