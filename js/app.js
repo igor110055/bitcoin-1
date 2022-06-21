@@ -196,8 +196,7 @@ function time() {
 	var minutes = "0" + date.getMinutes();
 	var seconds = "0" + date.getSeconds();
 	var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-	$("#option-area").text('Asia/Seoul');
-	$("#option-area-value").text(formattedTime);
+	$("#timeDisplay").text(formattedTime);
 }
 
 function init() {
@@ -292,9 +291,10 @@ function init() {
     }
 
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	console.log(timezone);
-
-	let tradingViewJson = JSON.parse('{"autosize": true,"hide_side_toolbar":'+hide_side_toolbar+',"theme": "dark","style": "'+ctype+'","locale": "kr","timezone": "'+timezone+'","interval": "'+chart+'","toolbar_bg": "#f1f3f6","enable_publishing": false,"save_image": false'+indicators+',"symbol": "'+market+':' + chartSymbol.toUpperCase() + '","container_id": "tv_btcusdt", "show_popup_button": true}');
+	const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
+	const userLocaleSplit = userLocale.split('-');
+	let locale = userLocaleSplit[1].toLowerCase();
+	let tradingViewJson = JSON.parse('{"autosize": true,"hide_side_toolbar":'+hide_side_toolbar+',"theme": "dark","style": "'+ctype+'","locale": "'+locale+'","timezone": "'+timezone+'","interval": "'+chart+'","toolbar_bg": "#f1f3f6","enable_publishing": false,"save_image": false'+indicators+',"symbol": "'+market+':' + chartSymbol.toUpperCase() + '","container_id": "tv_btcusdt", "show_popup_button": true}');
 	new TradingView.widget(tradingViewJson);
 	if (market == 'BINANCE') {
 		binanceConnection(symbol);
@@ -334,15 +334,11 @@ $( document ).ready(function() {
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
 	gtag('config', 'G-Q7S6NP87HT');
-	
+	time();
 	exchangeRate();
 	setInterval(function() { 
 		exchangeRate();
 	}, 60000);
-	
-	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	console.log(timezone);
-
 	init();
 });
 
@@ -354,6 +350,11 @@ function setting() {
 	localStorage.setItem("longShortInterval", $("#longShortInterval").val());
 	localStorage.setItem("chartInterval", $("#chartInterval").val());
 	localStorage.setItem("reloadInterval", $("#reloadInterval").val());
+	if ($("#spot:checked").val() == 'Y') {
+		localStorage.setItem("ttype", 'cu');
+	} else {
+		localStorage.setItem("ttype", 'ft');
+	}	
 	if ($("#ma:checked").val() == 'Y') {
 		localStorage.setItem("indicator_ma", 'Y');
 	} else {
