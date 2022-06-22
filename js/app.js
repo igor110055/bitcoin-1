@@ -145,7 +145,7 @@ function upbitConnection(symbol) {
 	        $("#upbitDisplay1").html('UPBIT : ' + addCommas(json.trade_price));
 	        if (curBtcusdt > 0.0) {
 		        let binancekrw = curBtcusdt * curChangeRate;
-		        $("#koreaPrimeDisplay").html('Korea Prime : ' + (((json.trade_price - binancekrw) / binancekrw) * 100).toFixed(2) + '%');
+		        $("#koreaPremiumDisplay").html('Korea Premium : ' + (((json.trade_price - binancekrw) / binancekrw) * 100).toFixed(2) + '%');
 	        }
 			/***
 			$("mainDisplay1").html(addCommas(json.trade_price));
@@ -320,7 +320,7 @@ function init() {
 	const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
 	const userLocaleSplit = userLocale.split('-');
 	let locale = userLocaleSplit[1].toLowerCase();
-	let tradingViewJson = JSON.parse('{"autosize": true,"hide_side_toolbar":'+hide_side_toolbar+',"theme": "dark","style": "'+ctype+'","locale": "'+locale+'","timezone": "'+timezone+'","interval": "'+chart+'","toolbar_bg": "#f1f3f6","enable_publishing": false,"save_image": false'+indicators+',"symbol": "'+market+':' + chartSymbol.toUpperCase() + '","container_id": "tv_btcusdt", "show_popup_button": true}');
+	let tradingViewJson = JSON.parse('{"autosize": true,"hide_legend": true,"hide_side_toolbar":'+hide_side_toolbar+',"theme": "dark","style": "'+ctype+'","locale": "'+locale+'","timezone": "'+timezone+'","interval": "'+chart+'","toolbar_bg": "#f1f3f6","enable_publishing": false,"save_image": false'+indicators+',"symbol": "'+market+':' + chartSymbol.toUpperCase() + '","container_id": "tv_btcusdt", "show_popup_button": true}');
 	new TradingView.widget(tradingViewJson);
 	if (market == 'BINANCE') {
 		binanceConnection(symbol);
