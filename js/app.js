@@ -32,20 +32,19 @@ function binanceConnection(symbol) {
 		let lastPrice = parseFloat(obj.c);
 		let highPrice = parseFloat(obj.h);
 		let lowPrice = parseFloat(obj.l);
-		$('#option-area').html('24H High / Low');
+		let highlow = '';
 		if (lastPrice > 10.0) {
 			let tmp = addCommas(lastPrice.toFixed(2)).split('.');
 			$("#mainDisplay1").html(localStorage.getItem("market") + ' : ' + tmp[0] + '.'+tmp[1]);
-			//$('#option-area-value').html(addCommas(highPrice.toFixed(0)) + ' / ' + addCommas(lowPrice.toFixed(0)));
+			highlow = addCommas('H ' + highPrice.toFixed(0)) + ' / L ' + addCommas(lowPrice.toFixed(0))
 			document.title = addCommas(lastPrice.toFixed(2));
 		} else {
 			$("mainDisplay1").html(addCommas(lastPrice.toFixed(4)));
-			//$('#option-area-value').html(addCommas(highPrice.toFixed(2)) + ' / ' + addCommas(lowPrice.toFixed(2)));
+			highlow = addCommas('H ' + highPrice.toFixed(2)) + ' / L ' + addCommas(lowPrice.toFixed(2));
 			document.title = addCommas(lastPrice.toFixed(4));
 		}
-		$("#mainDisplay2").html(symbol.toUpperCase());
+		$("#mainDisplay2").html(symbol.toUpperCase() + ' / ' + highlow);
 		curBtcusdt = lastPrice;
-		//$("#upbitKrw").html('<font>'+tmp[0]+'</font><font style="color:#b2b5be; font-weight: 300;">.'+tmp[1]+'</font>');
 	});
 }
 
@@ -335,6 +334,9 @@ $( document ).ready(function() {
 	gtag('js', new Date());
 	gtag('config', 'G-Q7S6NP87HT');
 	time();
+	setInterval(function() { 
+		time();
+	}, 1000);	
 	exchangeRate();
 	setInterval(function() { 
 		exchangeRate();
