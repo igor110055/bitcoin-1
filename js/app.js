@@ -19,10 +19,13 @@ var bitmex_ws_futures = "wss://www.bitmex.com/realtime";
 
 function binanceConnection(symbol) {
 	var ws_endpoint = "";
+	var typeName = "";
 	if (localStorage.getItem("ttype") == 'cu') {
 		ws_endpoint = binance_ws.replace('{symbol}', symbol);
+		typeName = 'Spot';
 	} else {
 		ws_endpoint = binance_ws_futures.replace('{symbol}', symbol);
+		typeName = 'Futures';
 	}
 
 	const socket = new ReconnectingWebSocket(ws_endpoint);
@@ -43,7 +46,7 @@ function binanceConnection(symbol) {
 			highlow = addCommas('H ' + highPrice.toFixed(2)) + ' / L ' + addCommas(lowPrice.toFixed(2));
 			document.title = addCommas(lastPrice.toFixed(4));
 		}
-		$("#mainDisplay2").html(symbol.toUpperCase() + ' / ' + highlow);
+		$("#mainDisplay2").html(typeName + ' / ' + symbol.toUpperCase() + ' / ' + highlow);
 		curBtcusdt = lastPrice;
 	});
 }
@@ -67,7 +70,7 @@ function bybitConnection(symbol) {
 				$("#mainDisplay1").html(addCommas(lastPrice.toFixed(4)));
 				document.title = addCommas(lastPrice.toFixed(4));
 			}
-			$("#mainDisplay2").html(symbol.toUpperCase());
+			$("#mainDisplay2").html('Futures / ' + symbol.toUpperCase());
 			curBtcusdt = lastPrice;
 		} catch (e) {
 		}
@@ -102,7 +105,7 @@ function bitmexConnection(symbol) {
 				$("#mainDisplay1").html(addCommas(lastPrice.toFixed(4)));
 				document.title = addCommas(lastPrice.toFixed(4));
 			}
-			$("#mainDisplay2").html(symbol.toUpperCase());
+			$("#mainDisplay2").html('Futures / ' + symbol.toUpperCase());
 			curBtcusdt = lastPrice;
 		} catch (e) {
 		}
@@ -208,9 +211,11 @@ function init() {
 	$("#symbol").val(symbol);
 	if (market == 'BYBIT' || market == 'BITMEX') {
 		$("#ttype").val('ft');
+		$("input:radio[name='spotFutures']:radio[value='ft']").prop('checked', true);
 		localStorage.setItem("ttype", "ft");
 	} else {
-		$("#ttype").val(ttype);
+		$("input:radio[name='spotFutures']:radio[value='"+ttype+"']").prop('checked', true);
+		//$("#ttype").val(ttype);
 	}
 	//$('#marketLogo').html('<img src="icon/'+market+'.png" width="15px;">');
 	$("#ctype").val(ctype);
@@ -342,16 +347,11 @@ $( document ).ready(function() {
 function setting() {
 	localStorage.setItem("market", $("#market").val());
 	localStorage.setItem("symbol", $("#symbol").val());
-	localStorage.setItem("ttype", $("#ttype").val());
+	localStorage.setItem("ttype", $("input[name='spotFutures']:checked").val());
 	localStorage.setItem("ctype", $("#ctype").val());
 	localStorage.setItem("longShortInterval", $("#longShortInterval").val());
 	localStorage.setItem("chartInterval", $("#chartInterval").val());
 	localStorage.setItem("reloadInterval", $("#reloadInterval").val());
-	if ($("#spot:checked").val() == 'Y') {
-		localStorage.setItem("ttype", 'cu');
-	} else {
-		localStorage.setItem("ttype", 'ft');
-	}	
 	if ($("#ma:checked").val() == 'Y') {
 		localStorage.setItem("indicator_ma", 'Y');
 	} else {
