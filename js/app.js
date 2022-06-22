@@ -179,6 +179,33 @@ function longShortRate(symbol, interval) {
 	res.send();
 }
 
+function bitgetListener () {
+	const obj = JSON.parse(this.responseText);
+	let lastPrice = parseFloat(obj.data.last);
+	let highPrice = parseFloat(obj.data.high24h);
+	let lowPrice = parseFloat(obj.data.low24h);
+	let highlow = '';
+	if (lastPrice > 10.0) {
+		let tmp = addCommas(lastPrice.toFixed(2)).split('.');
+		$("#mainDisplay1").html(localStorage.getItem("market") + ' : ' + tmp[0] + '.'+tmp[1]);
+		highlow = addCommas('H ' + highPrice.toFixed(0)) + ' / L ' + addCommas(lowPrice.toFixed(0))
+		document.title = addCommas(lastPrice.toFixed(2));
+	} else {
+		$("mainDisplay1").html(addCommas(lastPrice.toFixed(4)));
+		highlow = addCommas('H ' + highPrice.toFixed(2)) + ' / L ' + addCommas(lowPrice.toFixed(2));
+		document.title = addCommas(lastPrice.toFixed(4));
+	}
+	$("#mainDisplay2").html('Futures / ' + symbol.toUpperCase() + ' / ' + highlow);
+	curBtcusdt = lastPrice;
+}
+
+function bitget(symbol) {
+	var res = new XMLHttpRequest();
+	res.addEventListener("load", bitgetListener);
+	res.open("GET", "https://api.bitget.com/api/mix/v1/market/ticker?symbol="+symbol+"_UMCBL");
+	res.send();
+}
+
 function scriptQuery(){ 
 	var script = $('#main');
 	const params = script[0].src.substring(script[0].src.lastIndexOf('?')+1, script[0].src.length);
@@ -209,7 +236,7 @@ function init() {
 	let ctype = localStorage.getItem("ctype");
 	$("#market").val(market);
 	$("#symbol").val(symbol);
-	if (market == 'BYBIT' || market == 'BITMEX') {
+	if (market == 'BYBIT' || market == 'BITMEX' || market == 'BITGET') {
 		$("#ttype").val('ft');
 		$("input:radio[name='spotFutures']:radio[value='ft']").prop('checked', true);
 		localStorage.setItem("ttype", "ft");
@@ -301,7 +328,11 @@ function init() {
 		bybitConnection(symbol.toUpperCase());
 	} else if (market == 'BITMEX') {
 		bitmexConnection(symbol.toUpperCase());
-	} 
+	} else if (market == 'BITGET') {
+		setInterval(function() { 
+			bitget(symbol.toUpperCase());
+		}, 1000);
+	}
 	
 	upbitConnection(symbol.toUpperCase().replace('USDT', ''));
 
