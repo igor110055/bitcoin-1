@@ -139,8 +139,7 @@ function upbitConnection(symbol) {
 		reader.readAsText(event.data);
   		reader.onload = function() {
     		let json = JSON.parse(reader.result);
-    		$("#upbitDisplay2").html(symbol);
-	        $("#subDisplay1").html('UPBIT : ' + addCommas(json.trade_price));
+	        $("#upbitDisplay1").html('UPBIT : ' + addCommas(json.trade_price));
 	        if (curBtcusdt > 0.0) {
 		        let binancekrw = curBtcusdt * curChangeRate;
 		        $("#koreaPrimeDisplay").html('Korea Prime : ' + (((json.trade_price - binancekrw) / binancekrw) * 100).toFixed(2) + '%');
@@ -164,14 +163,10 @@ function longShortRateReqListener () {
 			shortRate = parseFloat(obj.data[0].list[i].shortRate);
 		}
 	}
-	//$("#mainDisplay3").text(longRate.toFixed(2) + '% / ' + shortRate.toFixed(2) + '%');
-	//$("#mainDisplay4").text('Long/Short - ' + localStorage.getItem("longShortInterval") + 'm');
-
 	$("#longRate").css("width", longRate.toFixed(2) + '%');
     $("#longRate").text('Long : ' + longRate.toFixed(2) + '%');
     $("#shortRate").css("width", shortRate.toFixed(2) + '%');
     $("#shortRate").text('Short : ' + shortRate.toFixed(2) + '%');
-
 }
 
 function longShortRate(symbol, interval) {
