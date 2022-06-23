@@ -1,0 +1,66 @@
+{
+    "name": "Cryptocurrency Dashboard",
+    "short_name": "CC",
+    "description": "Cryptocurrency Dashboard.",
+    "icons": [
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "172x172",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "196x196",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/bitcoin-icon.png",
+            "sizes": "1024x1024",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/bitcoin/index.html",
+    "display": "fullscreen",
+    "theme_color": "#282c34",
+    "background_color": "#282c34"
+}
