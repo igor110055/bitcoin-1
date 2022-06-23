@@ -14,6 +14,7 @@ var curChangeRate = 0.0;
 var curBtcusdt = 0.0;
 var binance_ws = "wss://stream.binance.com:9443/ws/{symbol}@miniTicker";
 var binance_ws_futures = "wss://fstream.binance.com/ws/{symbol}@miniTicker";
+var gemini_ws_futures = "wss://api.gemini.com/v1/marketdata/{symbol}";
 var bybit_ws_futures = "wss://stream.bybit.com/realtime_public";
 var bitmex_ws_futures = "wss://www.bitmex.com/realtime";
 
@@ -51,6 +52,29 @@ function binanceConnection(symbol) {
 	});
 }
 
+function geminiConnection(symbol) {
+	symbol = symbol.replace('USDT','USD');
+	const socket = new ReconnectingWebSocket(gemini_ws_futures.replace('{symbol}', symbol));
+	socket.maxReconnectInterval = 3000;
+	socket.addEventListener("message", function (event) {
+		let obj = JSON.parse(event.data);
+		try {
+			let lastPrice = parseFloat(obj.events[0].price);
+			if (lastPrice > 10.0) {
+				let tmp = addCommas(lastPrice.toFixed(2)).split('.');
+				$("#mainDisplay1").html(localStorage.getItem("market") + ' : ' + tmp[0] + '.'+tmp[1]);
+				document.title = addCommas(lastPrice.toFixed(2));
+			} else {
+				$("#mainDisplay1").html(addCommas(lastPrice.toFixed(4)));
+				document.title = addCommas(lastPrice.toFixed(4));
+			}
+			$("#mainDisplay2").html('Futures / ' + symbol.toUpperCase());
+			curBtcusdt = lastPrice;
+		} catch (e) {
+		}
+	});
+}
+
 function bybitConnection(symbol) {
 	const socket = new ReconnectingWebSocket(bybit_ws_futures);
 	socket.maxReconnectInterval = 3000;
@@ -75,10 +99,6 @@ function bybitConnection(symbol) {
 		} catch (e) {
 		}
 	});
-	
-	setInterval(function() { 
-		time();
-	}, 1000);
 }
 
 function bitmexConnection(symbol) {
@@ -110,10 +130,6 @@ function bitmexConnection(symbol) {
 		} catch (e) {
 		}
 	});
-	
-	setInterval(function() { 
-		time();
-	}, 1000);
 }
 
 function exchangeRateReqListener () {
@@ -147,10 +163,6 @@ function upbitConnection(symbol) {
 		        let binancekrw = curBtcusdt * curChangeRate;
 		        $("#koreaPremiumDisplay").html('Korea Premium : ' + (((json.trade_price - binancekrw) / binancekrw) * 100).toFixed(2) + '%');
 	        }
-			/***
-			$("mainDisplay1").html(addCommas(json.trade_price));
-			document.title = addCommas(addCommas(json.trade_price));
-			***/
     	}
 	});
 }
@@ -236,19 +248,38 @@ function init() {
 	let ctype = localStorage.getItem("ctype");
 	$("#market").val(market);
 	$("#symbol").val(symbol);
-	if (market == 'BYBIT' || market == 'BITMEX' || market == 'BITGET') {
-		$("#ttype").val('ft');
+	if (market != 'BINANCE') {
 		$("input:radio[name='spotFutures']:radio[value='ft']").prop('checked', true);
 		localStorage.setItem("ttype", "ft");
 	} else {
 		$("input:radio[name='spotFutures']:radio[value='"+ttype+"']").prop('checked', true);
-		//$("#ttype").val(ttype);
 	}
-	//$('#marketLogo').html('<img src="icon/'+market+'.png" width="15px;">');
 	$("#ctype").val(ctype);
 	$("#longShortInterval").val(longShort);
 	$("#chartInterval").val(chart);
 	$("#reloadInterval").val(reload);
+
+	if (market == 'BINANCE') {
+		binanceConnection(symbol);
+	} else if (market == 'GEMINI') {
+		geminiConnection(symbol.toUpperCase());
+	} else if (market == 'BYBIT') {
+		bybitConnection(symbol.toUpperCase());
+	} else if (market == 'BITMEX') {
+		bitmexConnection(symbol.toUpperCase());
+	} else if (market == 'BITGET') {
+		setInterval(function() { 
+			bitget(symbol.toUpperCase());
+		}, 1000);
+	}
+	
+	upbitConnection(symbol.toUpperCase().replace('USDT', ''));
+
+	longShortRate(symbol.toUpperCase().replace('USDT', ''), longShort);
+	setInterval(function() { 
+		longShortRate(symbol.toUpperCase().replace('USDT', ''), longShort);
+	}, 5000);
+
 	let indicators = ',"studies": [{{arg}}]';
 	let arg = '';
 	let ma = '"MASimple@tv-basicstudies"';
@@ -288,33 +319,33 @@ function init() {
     	$("#ichimoku").prop( "checked", true );
     }
     
-    indicators = indicators.replace('{{arg}}', arg.substring(0, arg.length-1));
-    let chartSymbol = symbol;
-    if (market == 'BINANCE' && ttype == 'ft') {
-    	chartSymbol = chartSymbol + 'PERP';
-    } else if (market == 'BITMEX') {
+	indicators = indicators.replace('{{arg}}', arg.substring(0, arg.length-1));
+	let chartSymbol = symbol;
+	if (market == 'BINANCE' && ttype == 'ft') {
+		chartSymbol = chartSymbol + 'PERP';
+	} else if (market == 'BITMEX') {
 		if (chartSymbol == 'btcusd' || chartSymbol == 'btcusdt') {
 			chartSymbol = 'xbtusd';
 		} else if (chartSymbol.indexOf('eth') > -1 || chartSymbol.indexOf('xrp') > -1 || chartSymbol.indexOf('ltc') > -1 || chartSymbol.indexOf('bch') > -1) {
 			chartSymbol = chartSymbol.replace('usdt', 'usd');
 		}
-    }
-    if (ttype == 'ft') {
-    	$(".card-body").css("background-color", '#455590');
-    }
-    if (ctype == 'line') {
-    	ctype = '2';
-    } else if (ctype == 'heikinashi') {
-    	ctype = '8';
-    } else {
-    	ctype = '1';
-    }
-    
-    let hide_side_toolbar = true;
-    if (localStorage.getItem("drawing_tools_bar") == 'Y') {
-    	hide_side_toolbar = false;
-    	$("#drawingtoolbar").prop( "checked", true );
-    }
+	}
+	if (ttype == 'ft') {
+		$(".card-body").css("background-color", '#455590');
+	}
+	if (ctype == 'line') {
+		ctype = '2';
+	} else if (ctype == 'heikinashi') {
+		ctype = '8';
+	} else {
+		ctype = '1';
+	}
+	
+	let hide_side_toolbar = true;
+	if (localStorage.getItem("drawing_tools_bar") == 'Y') {
+		hide_side_toolbar = false;
+		$("#drawingtoolbar").prop( "checked", true );
+	}
 
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
@@ -322,24 +353,6 @@ function init() {
 	let locale = userLocaleSplit[1].toLowerCase();
 	let tradingViewJson = JSON.parse('{"autosize": true,"hide_legend": true,"hide_side_toolbar":'+hide_side_toolbar+',"theme": "dark","style": "'+ctype+'","locale": "'+locale+'","timezone": "'+timezone+'","interval": "'+chart+'","toolbar_bg": "#f1f3f6","enable_publishing": false,"save_image": false'+indicators+',"symbol": "'+market+':' + chartSymbol.toUpperCase() + '","container_id": "tv_btcusdt", "show_popup_button": true}');
 	new TradingView.widget(tradingViewJson);
-	if (market == 'BINANCE') {
-		binanceConnection(symbol);
-	} else if (market == 'BYBIT') {
-		bybitConnection(symbol.toUpperCase());
-	} else if (market == 'BITMEX') {
-		bitmexConnection(symbol.toUpperCase());
-	} else if (market == 'BITGET') {
-		setInterval(function() { 
-			bitget(symbol.toUpperCase());
-		}, 1000);
-	}
-	
-	upbitConnection(symbol.toUpperCase().replace('USDT', ''));
-
-	longShortRate(symbol.toUpperCase().replace('USDT', ''), longShort);
-	setInterval(function() { 
-		longShortRate(symbol.toUpperCase().replace('USDT', ''), longShort);
-	}, 5000);
 
 	$(".tradingViewArea").css("height", localStorage.getItem("chart_height") + 'px');
 	if (reload > 0) {
